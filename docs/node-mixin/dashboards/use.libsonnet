@@ -12,7 +12,7 @@ local g = import 'github.com/grafana/jsonnet-libs/grafana-builder/grafana.libson
           g.panel('CPU Utilisation') +
           g.queryPanel(|||
             (
-              instance:node_cpu_utilisation:rate1m{%(nodeExporterSelector)s}
+              instance:node_cpu_utilisation:rate2m{%(nodeExporterSelector)s}
             *
               instance:node_num_cpu:sum{%(nodeExporterSelector)s}
             )
@@ -141,7 +141,7 @@ local g = import 'github.com/grafana/jsonnet-libs/grafana-builder/grafana.libson
               max without (fstype, mountpoint) (
                 node_filesystem_size_bytes{%(nodeExporterSelector)s, %(fsSelector)s} - node_filesystem_avail_bytes{%(nodeExporterSelector)s, %(fsSelector)s}
               )
-            ) 
+            )
             / scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{%(nodeExporterSelector)s, %(fsSelector)s})))
           ||| % $._config, '{{instance}}', legendLink) +
           g.stack +
@@ -156,7 +156,7 @@ local g = import 'github.com/grafana/jsonnet-libs/grafana-builder/grafana.libson
         g.row('CPU')
         .addPanel(
           g.panel('CPU Utilisation') +
-          g.queryPanel('instance:node_cpu_utilisation:rate1m{%(nodeExporterSelector)s, instance="$instance"}' % $._config, 'Utilisation') +
+          g.queryPanel('instance:node_cpu_utilisation:rate2m{%(nodeExporterSelector)s, instance="$instance"}' % $._config, 'Utilisation') +
           {
             yaxes: g.yaxes('percentunit'),
             legend+: { show: false },

@@ -17,10 +17,10 @@
           },
           {
             // CPU utilisation is % CPU is not idle.
-            record: 'instance:node_cpu_utilisation:rate1m',
+            record: 'instance:node_cpu_utilisation:rate2m',
             expr: |||
               1 - avg without (cpu, mode) (
-                rate(node_cpu_seconds_total{%(nodeExporterSelector)s, mode="idle"}[1m])
+                rate(node_cpu_seconds_total{%(nodeExporterSelector)s, mode="idle"}[2m])
               )
             ||| % $._config,
           },
